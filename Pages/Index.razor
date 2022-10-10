@@ -1,0 +1,67 @@
+﻿@page "/"
+@using InsuranceSystem;
+
+<h1>Patient Insurance Check</h1>
+
+<label for="patienName">Patient Name:</label>
+
+<select name="patienName" id="patienName" @bind="patients">
+    @foreach (var patient in patients)
+    {
+        <option value="@index">@patient.getPatientName() </option>
+    }
+</select>
+<br>
+
+<label for="medicalProcedure">Medical Procedure:</label>
+<select name="medicalProcedure" id="medicalProcedure">
+    <option value="0">Broken Arm</option>
+    <option value="1">Broken Wrist</option>
+    <option value="2">Broken Finger</option>
+    <option value="3">Broken Leg</option>
+    <option value="4">Broken Toe</option>
+</select>
+<br>
+
+<label for="amountCharged">Amount Charged:</label>
+
+<input type="text" id="amountCharged" name="amountCharged" @bind="strAmountCharged">
+<br>
+
+<button class="btn btn-primary" @onclick="CalculateCoverage">Check Coverage</button>
+
+<p>Amount Covered: @strAmountCovered </p>
+
+
+@code {
+    // This is the C# code that runs this page
+
+    private string strAmountCharged;
+    private string strAmountCovered;
+    private int currentCount = 0;
+    int index = 0;
+
+    private void CalculateCoverage()
+    {
+        currentCount++;
+        decimal amountCharged = decimal.Parse(strAmountCharged);
+        decimal amountCovered = amountCharged * 0.5M;
+        strAmountCovered = amountCovered.ToString("0.00");
+    }
+
+    List<InsuranceInterface> patients = new List<InsuranceInterface>();
+
+    private void initData()
+    {
+        patients.Add(new InNetworkPatient("Tom Gibbons", "A111B222", PolicyLevels.Gold));
+        patients.Add(new InNetworkPatient("Jen Rosato", "A222C444", PolicyLevels.Platnum));
+        patients.Add(new InNetworkPatient("Dave Vosen", "D333B111", PolicyLevels.Silver));
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        initData();
+    }
+
+}
+
