@@ -25,6 +25,11 @@ namespace Unit5_AdapterPatternPatient_Blazor.InsuranceSystem
             return patient.getPatientName();
         }
 
+        public string getPolicyNumber()
+        {
+            return patient.PolicyNumber.ToString();
+        }
+
         public bool IsCovered(string patientName, string policyNumber)
         {
             int intPolicyNumber = int.Parse(policyNumber);

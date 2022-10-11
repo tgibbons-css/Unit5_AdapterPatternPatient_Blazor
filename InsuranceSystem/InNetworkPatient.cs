@@ -75,6 +75,11 @@ namespace Unit5_AdapterPatternPatient_Blazor.InsuranceSystem
         {
             return Name;
         }
+
+        public string getPolicyNumber()
+        {
+            return PolicyNumber;
+        }
     }
 
 }

@@ -3,12 +3,16 @@
 
 <h1>Patient Insurance Check</h1>
 
-<label for="patienName">Patient Name:</label>
+<label for="patientName">Patient Name:</label>
 
-<select name="patienName" id="patienName" @bind="patients">
-    @foreach (var patient in patients)
+
+<select name="patientName" id="patientName" class="form-control" @bind="@selectedPatientID">
+    @if (patients != null)
     {
-        <option value="@index">@patient.getPatientName() </option>
+        @foreach (var patient in patients)
+        {
+            <option value="@patient.getPolicyNumber()">@patient.getPatientName() </option>
+        }
     }
 </select>
 <br>
@@ -30,16 +34,17 @@
 
 <button class="btn btn-primary" @onclick="CalculateCoverage">Check Coverage</button>
 
-<p>Amount Covered: @strAmountCovered </p>
+<p>Amount Covered: @strAmountCovered --- @selectedPatientID </p>
 
 
 @code {
     // This is the C# code that runs this page
-
+    List<InsuranceInterface> patients = new List<InsuranceInterface>();
     private string strAmountCharged;
     private string strAmountCovered;
     private int currentCount = 0;
-    int index = 0;
+    int patientIndex = 0;
+    string selectedPatientID;
 
     private void CalculateCoverage()
     {
@@ -49,7 +54,6 @@
         strAmountCovered = amountCovered.ToString("0.00");
     }
 
-    List<InsuranceInterface> patients = new List<InsuranceInterface>();
 
     private void initData()
     {
@@ -58,7 +62,7 @@
         patients.Add(new InNetworkPatient("Dave Vosen", "D333B111", PolicyLevels.Silver));
     }
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
         initData();
     }

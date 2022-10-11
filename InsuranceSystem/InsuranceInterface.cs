@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Unit5_AdapterPatternPatient_Blazor.InsuranceSystem
 {
-    interface InsuranceInterface
+    public interface InsuranceInterface
     {
         // verifies that the patient is currently covered by this policy
         bool IsCovered(string patientName, string policyNumber);
@@ -13,5 +13,7 @@ namespace Unit5_AdapterPatternPatient_Blazor.InsuranceSystem
         decimal CoverageAmount(int ProcedureID, decimal ProcedureCost);
 
         string getPatientName();
+
+        string getPolicyNumber();
     }
 }
