@@ -7,9 +7,11 @@
 
 
 <select name="patientName" id="patientName" class="form-control" @bind="@selectedPatientID">
-    @if (patients != null)
+    @if (patientRepo != null)
     {
-        @foreach (var patient in patients)
+        <option value="0000">Select a patient </option>
+
+        @foreach (var patient in patientRepo.getAllPatients())
         {
             <option value="@patient.getPolicyNumber()">@patient.getPatientName() </option>
         }
@@ -18,7 +20,7 @@
 <br>
 
 <label for="medicalProcedure">Medical Procedure:</label>
-<select name="medicalProcedure" id="medicalProcedure">
+<select name="medicalProcedure" id="medicalProcedure"  @bind="@selectedProcedure">
     <option value="0">Broken Arm</option>
     <option value="1">Broken Wrist</option>
     <option value="2">Broken Finger</option>
@@ -34,37 +36,33 @@
 
 <button class="btn btn-primary" @onclick="CalculateCoverage">Check Coverage</button>
 
-<p>Amount Covered: @strAmountCovered --- @selectedPatientID </p>
+<p>Amount Covered: @strAmountCovered </p>
 
 
 @code {
     // This is the C# code that runs this page
-    List<InsuranceInterface> patients = new List<InsuranceInterface>();
+    PatientRepository patientRepo = new PatientRepository();
+
     private string strAmountCharged;
     private string strAmountCovered;
-    private int currentCount = 0;
-    int patientIndex = 0;
     string selectedPatientID;
+    string selectedProcedure;
+
+
 
     private void CalculateCoverage()
     {
-        currentCount++;
         decimal amountCharged = decimal.Parse(strAmountCharged);
-        decimal amountCovered = amountCharged * 0.5M;
+        int selectProcedureNumber = int.Parse(selectedProcedure);
+        InsuranceInterface selectPatient = patientRepo.getPatientByPolicy(selectedPatientID);
+        decimal amountCovered = selectPatient.CoverageAmount(selectProcedureNumber, amountCharged);
         strAmountCovered = amountCovered.ToString("0.00");
     }
 
 
-    private void initData()
-    {
-        patients.Add(new InNetworkPatient("Tom Gibbons", "A111B222", PolicyLevels.Gold));
-        patients.Add(new InNetworkPatient("Jen Rosato", "A222C444", PolicyLevels.Platnum));
-        patients.Add(new InNetworkPatient("Dave Vosen", "D333B111", PolicyLevels.Silver));
-    }
-
     protected override void OnInitialized()
     {
-        initData();
+        // no initialization needed yet
     }
 
 }
