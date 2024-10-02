@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Unit5_AdapterPatternPatient_Blazor.InsuranceSystem
 {
-    public enum PolicyLevels { Silver, Gold, Platnum };
+    public enum PolicyLevels { Silver, Gold, Platinum };
 
     class InNetworkPatient : InsuranceInterface
     {
